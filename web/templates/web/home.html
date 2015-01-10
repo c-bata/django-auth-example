@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}ホーム{% endblock title %}
+
+{% block content %}
+    <div>
+        <h1>ホーム</h1>
+
+        <p>
+            {% if user and not user.is_anonymous %}
+                Hello {{ user.get_full_name|default:user.username }}!
+            {% else %}
+                ログインして下さい．
+            {% endif %}
+        </p>
+    </div>
+{% endblock content %}
