@@ -94,3 +94,4 @@ TEMPLATE_DIRS = (
 # Log in
 
 LOGIN_URL = '/login/'
+AUTH_USER_MODEL = 'accounts.CustomUser'
