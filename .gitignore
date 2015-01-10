@@ -60,3 +60,4 @@ target/
 
 db.sqlite3
 accounts/migrations/
+api/migrations/
