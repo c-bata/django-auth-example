@@ -4,6 +4,7 @@ from django.template import RequestContext
 
 def home(request):
     context = RequestContext(request,
-                             {'user': request.user})
+                             {'request': request,
+                              'user': request.user})
     return render_to_response('web/home.html',
                               context_instance=context)
