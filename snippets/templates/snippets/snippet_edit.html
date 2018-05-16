@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}スニペット編集{% endblock %}
+
+{% block main %}
+<h2>スニペット編集</h2>
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}" />
+    {% include 'includes/form.html' %}
+    <button type="submit" class="btn btn-primary">保存</button>
+</form>
+{% endblock %}

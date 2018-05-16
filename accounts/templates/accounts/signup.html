@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}会員登録{% endblock %}
+
+{% block main %}
+<h2>会員登録</h2>
+<form method="post">
+    {% csrf_token %}
+    {% include 'includes/form.html' %}
+    <button type="submit" class="btn btn-primary">登録</button>
+</form>
+
+<ul>
+    <li><a href="{% url 'login' %}">ログインはこちら</a></li>
+    <li><a href="{% url 'password_reset' %}">パスワードを忘れてしまった方はこちら</a></li>
+</ul>
+{% endblock %}

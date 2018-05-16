@@ -1,0 +1,51 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    padding: 30 0;
+}
+
+.footer {
+    background-color: #eee;
+    padding: 30;
+}
+
+.welcome {
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    border-radius: 3px;
+    background-color: #eee;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.article > * {
+    padding: 1rem 0rem;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: .75rem;
+}
+
+.highlight {
+    padding: 1rem;
+    border-radius: .25rem;
+}
+
+.highlight pre {
+    padding: 0;
+    margin: 0;
+}
+.markdown h1 { font-size: 1.7em; }
+.markdown h2 { font-size: 1.6em; }
+.markdown h3 { font-size: 1.3em; }
+.markdown h4 { font-size: 1.2em; }
+.markdown h5 { font-size: 1.1em; }
+.markdown h6 { font-size: 1.0em; }

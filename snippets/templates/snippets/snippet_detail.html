@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load widgetpatcher %}
+{% load pygmentize %}
+{% load markdownize %}
+
+{% block title %}{{ snippet.title }}{% endblock %}
+
+{% block extraheader %}
+<style>{% pygments_css %}</style>
+{% endblock %}
+
+{% block main %}
+
+{% for message in messages %}
+<div {% if message.tags %}class="{{ message.tags }}"{% endif %}>
+    {{ message }}
+</div>
+{% endfor %}
+
+<div class="article">
+    <h2 class="title">{{ snippet.title }} by {{ snippet.created_by.username }}</h2>
+
+    <small>投稿日: {{ snippet.created_at|date:"DATETIME_FORMAT" }}</small>
+    {% if user.is_authenticated %}
+    <small><a href="{% url 'snippet_edit' snippet.pk %}">編集</a></small>
+    {% endif %}
+
+    <div class="sourcecode">
+        {{ snippet.code|pygmentize:"python3" }}
+    </div>
+
+    <div class="markdown">
+        {{ snippet.description|markdownize }}
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">コメント一覧</h3>
+
+        {% if comments %}
+        {% for c in comments %}
+        <hr/>
+        <p class="card-text">{{ c.text }}</p>
+        <small class="text-muted">by {{ c.commented_by.username }} さん {{ c.commented_at|date:"DATETIME_FORMAT" }}</small>
+        {% endfor %}
+        {% else %}
+        <p>コメントはありません。</p>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">コメントを投稿する</h4>
+        <form method="post" action="{% url 'new_comment' snippet.pk %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div class="form-group">{{ form.text|add_class:"form-control" }}</div>
+            <button type="submit" class="btn btn-primary">コメント</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
