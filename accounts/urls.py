@@ -7,10 +7,12 @@ from django.contrib.auth.views import (
 from django.urls import path
 
 from accounts import views
+from accounts.forms import EmailAuthenticationForm
 
 urlpatterns = [
     path('signup/', views.SignUp.as_view(), name='signup'),
-    path('login/', LoginView.as_view(template_name='accounts/login.html'), name='login'),
+    path('login/', LoginView.as_view(form_class=EmailAuthenticationForm,
+                                     template_name='accounts/login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
 
     path('password_change/', PasswordChangeView.as_view(), name='password_change'),
