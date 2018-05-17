@@ -1,12 +1,8 @@
 django-auth-example
 ===================
 
-Sample source code for my japanese talk at Django Congress JP 2018.
-
-* Website: https://djangocongress.jp/
-* Title: Implements some authentication patterns in Django.
-
-In this talk I introduced how customize django authentication system like:
+Sample source code for my talk (title: "Djangoの認証処理実装パターン" in Japanese) at [Django Congress JP 2018](https://djangocongress.jp/).
+In this talk, I introduced how to implement some authentication patterns in django.
 
 * Customize Authentication Backend to authenticate with email/password.
 * Social authentication using python-social-core.
