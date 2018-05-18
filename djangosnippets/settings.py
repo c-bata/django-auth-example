@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'snippets.apps.SnippetsConfig',
     'accounts.apps.AccountsConfig',
+    'socials.apps.SocialsConfig',
 ]
 
 MIDDLEWARE = [
