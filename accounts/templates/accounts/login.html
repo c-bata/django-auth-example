@@ -11,6 +11,8 @@
     <button type="submit" class="btn btn-primary">ログイン</button>
 </form>
 
+<a href="{% url 'social:begin' 'github' %}" class="btn btn-primary">Github でログイン</a>
+
 <ul>
     <li><a href="{% url 'signup' %}">会員登録はこちら</a></li>
     <li><a href="{% url 'password_reset' %}">パスワードを忘れてしまった方はこちら</a></li>
