@@ -2,3 +2,5 @@ django
 gunicorn
 markdown
 pygments
+social-auth-core
+social-auth-app-django
