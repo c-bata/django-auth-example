@@ -5,6 +5,7 @@ from django.db import models
 class Social(models.Model):
     """Social Auth association model"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             null=True,
                              related_name='socials',
                              on_delete=models.CASCADE)
     provider = models.CharField(max_length=32)

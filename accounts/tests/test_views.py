@@ -1,7 +1,8 @@
 from django.test import TestCase, Client
 from django.urls import reverse, resolve
+from django.contrib.auth import views as auth_views
 
-from accounts import views
+from .. import views
 
 
 class SignUpTests(TestCase):
@@ -11,7 +12,7 @@ class SignUpTests(TestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_signup_url_resolves_signup_view(self):
-        view = resolve('/signup/')
+        view = resolve('/accounts/signup/')
         self.assertEquals(view.func, views.signup)
 
 
@@ -28,5 +29,6 @@ class PasswordResetDoneTests(TestCase):
         self.response = self.client.get(url)
 
     def test_view_function(self):
-        view = resolve('/reset/done/')
+        view = resolve('/accounts/password_reset/done/')
         self.assertEquals(view.func.view_class, auth_views.PasswordResetDoneView)
+

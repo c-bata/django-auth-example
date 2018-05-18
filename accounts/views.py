@@ -8,16 +8,15 @@ from django.shortcuts import render
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 
 from socials.models import Social
+from .forms import UserCreationForm
 
 logger = logging.getLogger('auth_example.accounts')
 
 
 def signup(request):
-    # request.user.is_authenticated が true なら login_redirect_url へとばす
     social_uid = request.session.get('social_uid')
     social_provider = request.session.get('social_provider')
 
-    # TODO(c-bata): Github OAuth以外にメールも認めるようになったらこのチェックを外す
     if social_uid == "" or social_provider == "":
         return HttpResponseBadRequest("Please retry Github authentication".encode('utf-8'))
 

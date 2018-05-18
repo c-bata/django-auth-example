@@ -3,3 +3,4 @@ gunicorn
 markdown
 pygments
 requests
+Pillow
