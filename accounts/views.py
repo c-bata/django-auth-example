@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm()
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
