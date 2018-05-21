@@ -24,13 +24,6 @@ def pygments_css(parser, token):
     return PygmentsCss()
 
 
-# register.filter(is_safe=True) はダメ。タグを全て消してしまう。 -> 当然では？
-# mark_safeでいいのかちゃんと調べる。攻撃してみる
-# https://docs.djangoproject.com/en/2.0/howto/custom-template-tags/
-
-# https://simpleisbetterthancomplex.com/series/2017/10/09/a-complete-beginners-guide-to-django-part-6.html#adding-markdown
-# ここもmark_safeだけだな
-# そういえばたしかにtemplate_filterじゃなくて、property methodにする手もある
 @register.filter
 @stringfilter
 def pygmentize(value, lexer_name):
