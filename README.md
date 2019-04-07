@@ -15,6 +15,15 @@ Requirements
 * Django 2.2
 * And others listed in requirements.txt
 
+## Branch structures
+
+* `master`: The project on master branch customized User model, 
+* `base`: Base branch to see the changes of each Pull Requests to describe following features.
+    * `email-auth-backend`: Email/Password authentication built on custom authentication backend.
+    * `customize-user-model`: How to define custom user model from AbstractBaseUser.
+    * `django-social-auth`: Social authentication using social-auth-core.
+    * `github-oauth-from-scratch`: Social authentication from scratch (There is no dependency with social-auth-core).
+
 # License
 
 This software is released under the MIT License, see LICENSE.txt.
