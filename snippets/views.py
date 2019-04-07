@@ -2,17 +2,28 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 from django.views.decorators.http import require_GET, require_POST
 
 from snippets.forms import SnippetForm, CommentForm
 from snippets.models import Snippet, Comment
 
 
+UserModel = get_user_model()
+
+
+def list_recently_updated_snippets(days=3):
+    snippets = Snippet.objects \
+        .filter(updated_at__gt=timezone.now() - timezone.timedelta(days=days)) \
+        .select_related('created_by').all()
+    return snippets
+
+
 def top(request):
     context = {
         "snippets": Snippet.objects.all(),
         "num_snippets": Snippet.objects.all().count(),
-        "num_users": get_user_model().objects.all().count(),
+        "num_users": UserModel.objects.all().count(),
     }
     return render(request, "top.html", context)
 
@@ -26,6 +37,8 @@ def new_snippet(request):
             snippet.created_by = request.user
             snippet.save()
             return redirect(top)
+        else:
+            return render(request, "snippets/snippet_new.html", {'form': form}, status=400)
     else:
         form = SnippetForm()
     return render(request, "snippets/snippet_new.html", {'form': form})
