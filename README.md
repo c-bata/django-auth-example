@@ -29,6 +29,11 @@ Other commands:
 * logs: `docker-compose logs -f backend`
 * mysql: `docker-compose exec mysql /bin/bash` and `mysql -u root`
 
+Custom management commands:
+
+* Inserting dummy ata: `python manage.py insert_dummy data`
+* Load testing: `python manage.py load_test`
+
 
 ## Setup databases using Docker and Run application on local machine
 

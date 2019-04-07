@@ -1,6 +1,6 @@
 import random
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from accounts.tests.factories import UserFactory
 from snippets.tests.factories import SnippetFactory
 
@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         account_count = options.get("account_count")
-        snippet_count = options.get("account_count")
+        snippet_count = options.get("snippet_count")
         if not account_count:
             account_count = 100
         if not snippet_count:
