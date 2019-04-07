@@ -1,0 +1,6 @@
+pyyaml
+faker
+factory_boy
+
+ipython
+ipdb

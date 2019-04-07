@@ -1,0 +1,21 @@
+- model: accounts.User
+  pk: 1
+  fields:
+    username: c-bata
+    email: shibata@example.com
+    password: secure-pass-shibata
+    is_admin: true
+- model: accounts.User
+  pk: 2
+  fields:
+    username: takanory
+    email: takanory@example.com
+    password: secure-pass-takanory
+    is_admin: false
+- model: accounts.User
+  pk: 3
+  fields:
+    username: terapyon
+    email: terapyon@example.com
+    password: secure-pass-terapyon
+    is_admin: false
