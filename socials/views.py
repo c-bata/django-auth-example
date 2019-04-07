@@ -1,41 +1,50 @@
+import logging
+
 from django.conf import settings
-from django.contrib.auth import REDIRECT_FIELD_NAME, login
-from django.http import Http404, HttpResponseRedirect
+from django.contrib.auth import login, get_user_model
+from django.http import Http404, HttpResponseBadRequest, HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.decorators.cache import never_cache
 
-from socials import github
-from socials.models import Social
+from . import github
+from .models import Social
 
-BACKENDS = settings.AUTHENTICATION_BACKENDS
-
-
-@never_cache
-def auth(request, provider):
-    pass
+logger = logging.getLogger('slidepress.social')
 
 
 @never_cache
 def complete(request, provider):
+    social = None
+    uid = None
+    username = None
+    email = None
     if provider == "github":
-        code = request.GET['code']
-        payload = {
-            "client_id": settings.SOCIAL_AUTH_GITHUB_KEY,
-            "client_secret": settings.SOCIAL_AUTH_GITHUB_SECRET,
-            "code": code,
-        }
-        access_token = github.get_access_token(payload)
+        access_token = github.get_access_token(request)
         user_info = github.get_github_user_info(access_token)
-        user = github.get_or_create_user(
-            nickname=user_info['login'],
-            provider='github',
-            uid=user_info['id'],
-            email=user_info['email'],
-        )
-        login(request, user)
+
+        uid = user_info.get('id')
+        email = user_info.get('email')
+        username = user_info.get('login')
+        if not uid:
+            return HttpResponseBadRequest('"id" fields must not be empty'.encode('utf-8'))
     else:
         raise Http404('Unsupported provider')
-    return HttpResponseRedirect("/")
+
+    social, created = Social.objects.get_or_create(provider=provider, uid=uid)
+    if created:
+        logger.info(f"new social account registered: {uid} {provider} {username} {email}")
+
+    if social.user_id is None:
+        request.session['social_uid'] = uid
+        request.session['social_provider'] = provider
+        request.session['social_username'] = username
+        request.session['social_email'] = email
+        return redirect(reverse('signup'))
+
+    user = get_user_model().objects.get(id=social.user_id)
+    login(request, user, 'django.contrib.auth.backends.ModelBackend')
+    return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
 
 
 @never_cache

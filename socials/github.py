@@ -1,32 +1,7 @@
 import requests
 import json
 
-from django.db.models import fields
-from django.contrib.auth import get_user_model
-
-from socials.models import Social
-
-UserModel = get_user_model()
-
-
-def get_or_create_user(nickname, provider, uid, email):
-    try:
-        social = Social.objects.get(provider=provider, uid=uid)
-        return social.user
-    except Social.DoesNotExist:
-        social = Social(provider=provider, uid=uid)
-
-    if email is None:
-        email = "noregister@example.com"
-
-    user = UserModel(
-        username=nickname, email=email,
-        password=UserModel.objects.make_random_password(),
-    )
-    user.save()
-    social.user = user
-    social.save(force_insert=True)
-    return user
+from django.conf import settings
 
 
 def get_github_user_info(access_token):
@@ -35,7 +10,13 @@ def get_github_user_info(access_token):
     return res.json()
 
 
-def get_access_token(payload):
+def get_access_token(request):
+    code = request.GET['code']
+    payload = {
+        "client_id": settings.SOCIAL_AUTH_GITHUB_KEY,
+        "client_secret": settings.SOCIAL_AUTH_GITHUB_SECRET,
+        "code": code,
+    }
     headers = {'Content-Type': 'application/json'}
     res = requests.post('https://github.com/login/oauth/access_token',
                         data=json.dumps(payload), headers=headers)
