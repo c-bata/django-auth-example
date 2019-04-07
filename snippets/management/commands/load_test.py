@@ -39,13 +39,13 @@ class Throttle:
                 time.sleep((amount - self.tokens) / self.rate)
 
 
-def fetch_with_throttle(url: str, throttle: Throttle, do_login: bool,
-                        username: str, password: str) -> (int, bool):
+def fetch_with_throttle(url: str, throttle: Throttle,
+                        username: str = None, password: str = None) -> (int, bool):
     # returned values: status_code, timeout
     throttle.consume()
 
     try:
-        if do_login:
+        if username:
             res = requests.get(url, timeout=5, auth=HTTPBasicAuth(username, password))
         else:
             res = requests.get(url, timeout=5)
@@ -58,10 +58,10 @@ def fetch_with_throttle(url: str, throttle: Throttle, do_login: bool,
     return res.status_code, False
 
 
-def fetch(url: str, do_login: bool = False) -> (int, bool):
+def fetch(url: str, username: str = None, password: str = None) -> (int, bool):
     # returns: status_code, timeout
     try:
-        if do_login:
+        if username:
             res = requests.get(url, timeout=5, auth=HTTPBasicAuth(username, password))
         else:
             res = requests.get(url, timeout=5)
@@ -100,32 +100,32 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--login', action='store_true',
                             help='send requests from authenticated user')
-        parser.add_argument('--throttle', action='store_true',
-                            help='send requests using throttle')
+        parser.add_argument('--throttle', type=int, default=0,
+                            help='Throttling rate. Not throttling if given 0')
         parser.add_argument('--username', help='Login username')
         parser.add_argument('--password', help='Login password')
         parser.add_argument('--url', help='Request url',
                             default='http://127.0.0.1:8000/api/snippets/')
 
     def handle(self, *args, **options):
-        do_login: bool = options.get('login')
-        use_throttle: bool = options.get('throttle')
+        throttle_rate: int = options.get('throttle')
         username: str = options.get('username')
         password: str = options.get('password')
         url: str = options.get('url')
 
-        rate_per_second = 8 if do_login else 2
-        throttle = Throttle(rate_per_second)
+        throttle: Throttle = None
+        if throttle_rate > 0:
+            throttle = Throttle(throttle_rate)
 
         while True:
             start = time.time()
             with ThreadPoolExecutor(10) as pool:
-                if use_throttle:
+                if throttle_rate > 0:
                     results = pool.map(lambda a: fetch_with_throttle(*a),
-                                       [(url, throttle, do_login, username, password) for _ in range(20)])
+                                       [(url, throttle, username, password) for _ in range(20)])
                 else:
                     results = pool.map(lambda a: fetch(*a),
-                                       [(url, do_login, username, password) for _ in range(20)])
+                                       [(url, username, password) for _ in range(20)])
             end = time.time()
             elapsed = end - start
             print_result(results, elapsed)

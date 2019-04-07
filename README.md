@@ -32,7 +32,7 @@ Other commands:
 Custom management commands:
 
 * Inserting dummy ata: `python manage.py insert_dummy data`
-* Load testing: `python manage.py load_test`
+* Load testing: `python manage.py load_test --username foo --password bar`
 
 
 ## Setup databases using Docker and Run application on local machine
