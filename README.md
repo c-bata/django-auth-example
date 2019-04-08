@@ -31,7 +31,7 @@ Other commands:
 
 Custom management commands:
 
-* Inserting dummy ata: `python manage.py insert_dummy data`
+* Inserting dummy data: `python manage.py insert_dummy data`
 * Load testing: `python manage.py load_test --username foo --password bar`
 
 
@@ -63,7 +63,7 @@ $ python manage.py runserver
 
 ## Branch structures
 
-* `master`: The project on master branch customized User model, 
+* `master`: The project on master branch customizing User model, supporting Github OAuth.
 * `base`: Base branch to see the changes of each Pull Requests to describe following features.
     * `email-auth-backend`: Email/Password authentication built on custom authentication backend.
     * `customize-user-model`: How to define custom user model from AbstractBaseUser.
