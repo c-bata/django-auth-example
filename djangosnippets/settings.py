@@ -17,10 +17,14 @@ from django.contrib import messages
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IS_TEST = sys.argv[1:2] == ['test']
 
-DEBUG = True if os.environ.get('DEBUG', '').lower() == "true" else False
-SECRET_KEY = os.environ.get('SECRET_KEY', '')
+DEBUG = True if os.environ.get('DJ_DEBUG', '').lower() == "true" else False
+SECRET_KEY = os.environ.get('DJ_SECRET_KEY', '')
 
 ALLOWED_HOSTS = []
+if not DEBUG and not IS_TEST:
+    ALLOWED_HOSTS += [
+        os.environ.get('DJ_ALLOWED_HOSTS'),
+    ]
 
 
 # Application definition

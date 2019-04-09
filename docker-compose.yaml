@@ -9,11 +9,12 @@ services:
       - REDIS_PORT=6379
       - REDIS_DB=0
       - MYSQL_HOST=mysql
+      - DJ_DEBUG=false
+      - DJ_ALLOWED_HOSTS=*
 
+      - DJ_SECRET_KEY
       - MYSQL_USER
       - MYSQL_DATABASE
-      - DJANGO_DEBUG
-      - DJANGO_SECRET_KEY
       - REDIS_PASSWORD
       - MYSQL_PASSWORD
       - SOCIAL_AUTH_GITHUB_KEY
