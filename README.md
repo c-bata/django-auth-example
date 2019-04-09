@@ -39,7 +39,8 @@ Custom management commands:
 
 ```sh
 # django
-export SECRET_KEY=secretkey
+export DJANGO_SECRET_KEY=secretkey
+export DJANGO_DEBUG=True
 
 # database
 export REDIS_PASSWORD=redispass

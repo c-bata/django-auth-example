@@ -12,16 +12,16 @@ from snippets.models import Snippet, Comment
 UserModel = get_user_model()
 
 
-def list_recently_updated_snippets(days=3):
+def list_recently_updated_snippets(days=3, limit=30):
     snippets = Snippet.objects \
         .filter(updated_at__gt=timezone.now() - timezone.timedelta(days=days)) \
-        .select_related('created_by').all()
+        .select_related('created_by').all()[:limit]
     return snippets
 
 
 def top(request):
     context = {
-        "snippets": Snippet.objects.all(),
+        "snippets": list_recently_updated_snippets(),
         "num_snippets": Snippet.objects.all().count(),
         "num_users": UserModel.objects.all().count(),
     }

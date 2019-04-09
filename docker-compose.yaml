@@ -12,7 +12,8 @@ services:
 
       - MYSQL_USER
       - MYSQL_DATABASE
-      - SECRET_KEY
+      - DJANGO_DEBUG
+      - DJANGO_SECRET_KEY
       - REDIS_PASSWORD
       - MYSQL_PASSWORD
       - SOCIAL_AUTH_GITHUB_KEY

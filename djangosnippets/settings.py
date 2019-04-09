@@ -17,15 +17,8 @@ from django.contrib import messages
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IS_TEST = sys.argv[1:2] == ['test']
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'lvr)2ac6bi^l#414b#h*6%w%347e)+&szk9&46yobd@7+h+fag'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if os.environ.get('DEBUG', '').lower() == "true" else False
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 ALLOWED_HOSTS = []
 
@@ -46,6 +39,12 @@ INSTALLED_APPS = [
     # third party apps
     'rest_framework',
 ]
+
+if DEBUG or IS_TEST:
+    INSTALLED_APPS += [
+        'django_extensions',
+        'debug_toolbar',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

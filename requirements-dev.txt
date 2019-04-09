@@ -4,3 +4,6 @@ factory_boy
 
 ipython
 ipdb
+
+django-extensions
+django-debug-toolbar
