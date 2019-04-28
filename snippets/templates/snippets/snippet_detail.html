@@ -11,11 +11,7 @@
 
 {% block main %}
 
-{% for message in messages %}
-<div {% if message.tags %}class="{{ message.tags }}"{% endif %}>
-    {{ message }}
-</div>
-{% endfor %}
+{% include 'includes/messages.html' %}
 
 <div class="article">
     <h2 class="title">{{ snippet.title }} by {{ snippet.created_by.username }}</h2>
