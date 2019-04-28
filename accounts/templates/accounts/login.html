@@ -3,7 +3,7 @@
 
 {% block main %}
 <h2>ログイン</h2>
-
+{% include 'includes/messages.html' %}
 <form method="post">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}" />

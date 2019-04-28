@@ -3,6 +3,7 @@
 
 {% block main %}
 <h2>会員登録</h2>
+{% include 'includes/messages.html' %}
 <form method="post">
     {% csrf_token %}
     {% include 'includes/form.html' %}

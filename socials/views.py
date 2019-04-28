@@ -4,11 +4,11 @@ from django.conf import settings
 from django.contrib.auth import login, get_user_model
 from django.http import Http404, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.decorators.cache import never_cache
 
 from . import github
 from .models import Social
-from accounts.views import signup
 
 logger = logging.getLogger('slidepress.social')
 
@@ -40,7 +40,7 @@ def complete(request, provider):
         request.session['social_provider'] = provider
         request.session['social_username'] = username
         request.session['social_email'] = email
-        return redirect(signup)
+        return redirect(reverse('signup'))
 
     user = get_user_model().objects.get(id=social.user_id)
     login(request, user, 'django.contrib.auth.backends.ModelBackend')
