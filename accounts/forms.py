@@ -13,3 +13,10 @@ class UserCreationForm(BaseUserCreationForm):
 class UserChangeForm(BaseUserChangeForm):
     class Meta(BaseUserChangeForm.Meta):
         model = User
+        fields = (
+            'username',
+            'email',
+            'display_name',
+            'profile_icon',
+            'self_introduction',
+        )

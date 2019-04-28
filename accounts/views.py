@@ -3,11 +3,11 @@ import logging
 from django.contrib import messages
 from django.contrib.auth import login
 from django.urls import reverse
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.http import HttpResponseRedirect
 
 from socials.models import Social
-from .forms import UserCreationForm
+from .forms import UserCreationForm, UserChangeForm
 
 logger = logging.getLogger('auth_example.accounts')
 
@@ -43,3 +43,19 @@ class SignUp(CreateView):
 
     def get_success_url(self):
         return reverse('top')
+
+
+class UserChangeView(UpdateView):
+    form_class = UserChangeForm
+    template_name = "accounts/change.html"
+
+    def form_invalid(self, form):
+        messages.add_message(self.request, messages.ERROR,
+                             f"Failed to change user info")
+        return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse('change')
+
+    def get_object(self, queryset=None):
+        return self.request.user
