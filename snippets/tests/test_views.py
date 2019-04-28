@@ -1,5 +1,7 @@
+import pytz
 from unittest import mock
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponseRedirect
@@ -12,7 +14,8 @@ from snippets.views import new_snippet, list_recently_updated_snippets
 UserModel = get_user_model()
 
 
-current_datetime = timezone.datetime(year=2019, month=1, day=15, hour=12)
+tzinfo = pytz.timezone(settings.TIME_ZONE)
+current_datetime = timezone.datetime(year=2019, month=1, day=15, hour=12, tzinfo=tzinfo)
 
 
 class ListRecentlyUpdatedSnippetsTests(TestCase):
