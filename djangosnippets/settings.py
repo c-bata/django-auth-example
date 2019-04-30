@@ -15,13 +15,12 @@ import sys
 from django.contrib import messages
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-IS_TEST = sys.argv[1:2] == ['test']
 
 DEBUG = True if os.environ.get('DJ_DEBUG', '').lower() == "true" else False
 SECRET_KEY = os.environ.get('DJ_SECRET_KEY', '')
 
 ALLOWED_HOSTS = []
-if not DEBUG and not IS_TEST:
+if not DEBUG:
     ALLOWED_HOSTS += [
         os.environ.get('DJ_ALLOWED_HOSTS'),
     ]
@@ -44,7 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
 ]
 
-if DEBUG or IS_TEST:
+if DEBUG:
     INSTALLED_APPS += [
         'django_extensions',
         'debug_toolbar',
@@ -58,9 +57,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # third party middleware
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+if DEBUG:
+    MIDDLEWARE += [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
 
 ROOT_URLCONF = 'djangosnippets.urls'
 
@@ -86,24 +88,12 @@ WSGI_APPLICATION = 'djangosnippets.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-if IS_TEST:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.environ.get('MYSQL_DATABASE'),
-            'USER': os.environ.get('MYSQL_USER'),
-            'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
-        }
-    }
+}
 
 
 # Password validation
@@ -158,18 +148,7 @@ STATICFILES_DIRS = [
 
 # Logging
 
-if IS_TEST:
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'console': {
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',
-            }
-        },
-    }
-else:
+if DEBUG:
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
@@ -185,6 +164,17 @@ else:
                 'handlers': ['console'],
             },
         }
+    }
+else:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+            }
+        },
     }
 
 # Messages
@@ -209,14 +199,3 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     )
 }
-
-if os.environ.get("RATE_LIMIT") == "true":
-    REST_FRAMEWORK['DEFAULT_THROTTLE_CLASSES'] = (
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle',
-    )
-
-    REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {
-        'anon': '3/sec',
-        'user': '15/sec',
-    }

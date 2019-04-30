@@ -15,38 +15,12 @@ In this talk, I introduced how to implement some authentication patterns in djan
 * Django 2.2
 * And others listed in requirements.txt
 
-## Using Docker compose
-
-```console
-$ docker-compose build
-$ docker-compose up -d
-$ docker-compose run backend python manage.py migrate
-```
-
-Other commands:
-
-* bash: `docker-compose exec backend /bin/bash`
-* logs: `docker-compose logs -f backend`
-* mysql: `docker-compose exec mysql /bin/bash` and `mysql -u root`
-
-Custom management commands:
-
-* Inserting dummy data: `python manage.py insert_dummy data`
-* Load testing: `python manage.py load_test --username foo --password bar`
-
-
 ## Setup databases using Docker and Run application on local machine
 
 ```sh
 # django
 export DJ_SECRET_KEY=secretkey
 export DJ_DEBUG=True
-
-# database
-export REDIS_PASSWORD=redispass
-export MYSQL_USER=snippets
-export MYSQL_PASSWORD=mysqlpass
-export MYSQL_DATABASE=snippets
 
 # social-auth
 export SOCIAL_AUTH_GITHUB_KEY=xxxxxxxxxxxxxxxxxxxx
@@ -56,9 +30,9 @@ export SOCIAL_AUTH_GITHUB_SECRET=yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 Running:
 
 ```console
-$ docker-compose up -d mysql redis
 $ pip -c requirements/constraints.txt install -r requirements/develop.txt
 $ python manage.py migrate
+$ python manage.py insert_dummy_data
 $ python manage.py runserver
 ```
 
