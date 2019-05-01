@@ -16,7 +16,7 @@ from django.contrib import messages
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-DEBUG = True if os.environ.get('DJ_DEBUG', '').lower() == "true" else False
+DEBUG = os.environ.get('DJ_DEBUG', '').lower() == "true"
 SECRET_KEY = os.environ.get('DJ_SECRET_KEY', '')
 
 ALLOWED_HOSTS = []
@@ -77,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # custom context processors
                 'socials.context_processors.social_login_url',
             ],
         },
@@ -148,34 +149,16 @@ STATICFILES_DIRS = [
 
 # Logging
 
-if DEBUG:
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'console': {
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',
-            }
-        },
-        'loggers': {
-            'django.db.backends': {
-                'level': 'DEBUG',
-                'handlers': ['console'],
-            },
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
         }
-    }
-else:
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'console': {
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',
-            }
-        },
-    }
+    },
+}
 
 # Messages
 MESSAGE_TAGS = {
