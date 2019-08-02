@@ -1,5 +1,5 @@
-django==2.2
-djangorestframework==3.9.2
+django
+djangorestframework
 gunicorn
 markdown
 pygments
